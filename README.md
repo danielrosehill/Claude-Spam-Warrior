@@ -4,13 +4,15 @@ A **Claude Code workspace template** for analysing deceptive unsolicited email t
 
 ## The Problem
 
-Modern spam increasingly uses AI to mimic personal correspondence. These emails:
-- Reference your name, company, or website to fake familiarity
-- Omit unsubscribe links and `List-Unsubscribe` headers
-- Embed tracking pixels to monitor open rates
-- Disguise commercial pitches as genuine outreach
+Modern spam increasingly uses AI to mimic personal correspondence. These emails — mostly scraped-list outreach from GitHub, personal websites, and public profiles — look like this:
 
-Traditional keyword and header-based filters miss them. This template uses Claude Code's analytical capabilities to dissect these emails systematically.
+- Someone references your "interest in X" or "impressive work" without engaging with anything specific you've done
+- They want something from you (retweet, demo, intro call, backlink) while offering nothing in return
+- Every link is routed through click-tracking domains, with a tracking pixel at the bottom
+- The tone pretends to be personal but the email is clearly a mass campaign
+- They pass every traditional spam filter: valid DKIM/SPF, real company domains, proper infrastructure
+
+Traditional keyword and header-based filters miss them entirely. The signal is in the *intent*, not the headers. This template uses Claude Code's reasoning to ask the right question: **is this scraping spam or genuine outreach?**
 
 ## What It Does
 
@@ -18,9 +20,10 @@ For each email you feed it, Claude Spam Warrior runs three analyses:
 
 | Stage | Output |
 |-------|--------|
-| **Semantic Spam Analysis** | A report identifying deception indicators with quoted evidence, plus a reusable instruction for training an AI email-filter agent |
-| **Tracking Pixel Detection** | Extracts hidden tracking pixel URLs and domains, accumulating them into a blocklist |
+| **Semantic Spam Analysis** | Reasons about whether the email is scraped-list outreach or genuine correspondence, assigns a spam confidence score (0.0–1.0), and generates a reusable filter instruction |
+| **Tracking Detection** | Extracts tracking pixels and click-tracking redirect domains, logs each with type (`tracking_pixel` or `click_tracking`) into a blocklist |
 | **Sender Block** | Logs the sender to a local blocklist and (with MCP integration) pushes to a server-side email filter |
+| **Processed Email Log** | Records every analysed email with sender details, full body text, spam score, and reasoning into a structured JSON data store |
 
 ## Quick Start
 
@@ -40,8 +43,9 @@ inputs/
   emails/              <- Drop raw .eml files here
     sanitised/         <- Redacted samples safe to share/commit
 data/
-  tracking-pixels.json <- Accumulated tracking pixel domains
+  tracking-domains.json <- Tracking pixel and click-tracking domains (for DNS blocklists)
   sender-blocklist.json<- Blocked sender addresses
+  processed-emails.json<- Log of all analysed emails with spam scores and full details
 outputs/
   analyses/            <- Per-email markdown analysis reports
 .claude/
@@ -78,9 +82,9 @@ Each analysis is saved to `outputs/analyses/<filename>-analysis.md` and includes
 - A confidence rating (low/medium/high)
 - A filter instruction snippet for downstream AI agents
 
-### Tracking Pixel Blocklist
+### Tracking Domain Blocklist
 
-`data/tracking-pixels.json` accumulates over time. Use `/tracking-report` to generate a domain list suitable for:
+`data/tracking-domains.json` accumulates over time, with each entry typed as `tracking_pixel` or `click_tracking`. Use `/tracking-report` to generate a domain list suitable for:
 - [Pi-hole](https://pi-hole.net/) blocklists
 - [AdGuard Home](https://adguard.com/adguard-home/overview.html) filters
 - Browser extension blocklists

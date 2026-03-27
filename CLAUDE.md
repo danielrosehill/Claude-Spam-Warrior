@@ -24,8 +24,9 @@ inputs/
   emails/           ← Drop raw .eml files here
     sanitised/      ← Redacted/sample emails for sharing
 data/
-  tracking-pixels.json   ← Accumulated tracking pixel domains
+  tracking-domains.json  ← Accumulated tracking pixel and click-tracking domains
   sender-blocklist.json  ← Blocked sender addresses
+  processed-emails.json  ← Log of all analysed emails with spam confidence scores
 outputs/
   analyses/         ← Per-email analysis reports
 ```
@@ -36,19 +37,27 @@ Each email goes through three stages:
 
 ### 1. Semantic Spam Analysis (SSA)
 
-Produce a short report identifying deception indicators and generate a reusable instruction snippet for an AI email-filter agent. The instruction should be specific enough to catch similar emails without false-positiving on legitimate correspondence.
+Produce a short report that reasons about whether the email is **scraped-list outreach or genuine correspondence**. The core question: does this person actually care about the recipient, or are they carpet-bombing a list they scraped?
 
-Indicators to look for:
-- Generic flattery disguised as personalisation ("I came across your impressive work...")
-- Templated structure with mail-merge variables
-- Missing or fake sender identity signals
-- Urgency/scarcity language without substance
-- No unsubscribe mechanism (link or `List-Unsubscribe` header)
-- Sender domain age, reputation, or mismatch with claimed identity
+These emails typically pass every traditional spam filter — valid DKIM/SPF, real company domains, proper infrastructure. The signal is in the *intent*, not the headers.
 
-### 2. Tracking Pixel Detection
+Reasoning signals (not a checklist — use judgement):
+- **Scraped personalisation**: vague references to your "interest in X" or "impressive work" that could apply to anyone on the list, vs. specific engagement with something you actually did
+- **Asymmetric ask**: wants something from you (retweet, intro, demo, backlink) while offering nothing of genuine value in return
+- **Templated structure**: the email reads like a mail-merge with a name swapped in, even if well-written
+- **Tracking infrastructure**: all links routed through click-tracking domains (e.g., `qmailroute.net`, `mailtrack.io`), tracking pixels — signs of a mass campaign, not a personal email
+- **Artificial urgency**: deadlines that pressure a quick reply ("by Friday", "spots filling up") with no real reason
+- **Commercial intent disguised as friendliness**: the tone pretends to be peer-to-peer but the sender wants free promotion, a sales call, or a backlink
 
-Scan the HTML body for tracking pixels — typically 1x1 transparent images or zero-dimension elements loaded from external URLs. Record each pixel's full URL and domain in `data/tracking-pixels.json`. This data feeds a DNS blocklist over time.
+Important: many of these emails come from real people at real companies with legitimate DNS. Don't weight technical signals like missing unsubscribe headers or domain age — those are orthogonal to this threat.
+
+### 2. Tracking Detection
+
+Scan the HTML body for two types of tracking infrastructure:
+- **Tracking pixels**: 1x1 transparent images or zero-dimension elements loaded from external URLs
+- **Click-tracking redirects**: hyperlinks routed through redirect domains (e.g., `qmailroute.net`, `mailtrack.io`) rather than linking directly to the destination
+
+Record each tracker's domain and type (`tracking_pixel` or `click_tracking`) in `data/tracking-domains.json`. This data feeds a DNS blocklist over time.
 
 ### 3. Sender Block
 
@@ -65,5 +74,5 @@ Add the sender's address to `data/sender-blocklist.json`. If an MCP tool is avai
 ## Customisation
 
 - **MCP integration**: If you have an MCP server for your email provider, update the "Sender Block" step to call it directly.
-- **DNS blocklist export**: The tracking pixel data in `data/tracking-pixels.json` can be exported to Pi-hole, AdGuard, or similar DNS filter formats.
+- **DNS blocklist export**: The tracking domain data in `data/tracking-domains.json` can be exported to Pi-hole, AdGuard, or similar DNS filter formats.
 - **Filter agent training**: The SSA instruction snippets in each analysis can be aggregated into a system prompt for an autonomous email-triage agent.

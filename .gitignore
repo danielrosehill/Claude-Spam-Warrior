@@ -2,8 +2,9 @@
 inputs/emails/*.eml
 
 # Analysis data (generated per-user)
-data/tracking-pixels.json
+data/tracking-domains.json
 data/sender-blocklist.json
+data/processed-emails.json
 outputs/analyses/*.md
 
 # Keep sanitised samples
