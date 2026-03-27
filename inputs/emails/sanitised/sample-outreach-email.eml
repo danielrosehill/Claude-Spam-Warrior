@@ -1,0 +1,236 @@
+Delivered-To: john@johndoe.com
+Received: by 2002:a05:7300:f4b2:b0:3ac:d9e1:b732 with SMTP id mx77csp2841523fyz;
+        Thu, 26 Mar 2026 15:49:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=5; AJvYcCWPxR8hwLs5HxNCEtFiCu5H9uU9kmqUdx4RmB0obpj/3YD7XDhmkFARNQPvhnynNgFh5N4xTzN=@johndoe.com
+X-Received: by 2002:a05:6808:2491:b0:577:af4e:9518 with SMTP id 6725733923f58-57bb174f56emr93815c7f.62.1774565374573;
+        Thu, 26 Mar 2026 15:49:34 -0700 (PDT)
+ARC-Seal: i=4; a=rsa-sha256; t=1774565374; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=DktXoLbEVK+268AH0Fm/db9PGEG9pPuiplddHGSW3soosBnFLktqEe1f/pNrrghsB6
+         +VCaxynCiIOcGEQAn1LYsBeIVI07wIk79Od7N/fn8Iiarrm/aq/TT4xABjBZwN4DCzjre
+         KewCd0DCTVyaRfB0ya9Adx0xSkxQ7ZayuDDK4owSn18Gn/3G2IA/B0Dimv0avNe4EYLMz
+         wUHk87u4VDEyr2EDVP7LkfEGW8VfHp8OPTmeiVtioeIMkwr1sBBqtfD
+         +eidLA0MpAh1TMrw8ROQjTcIclF6weTFlFBGbZT2
+         rxjA==
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=tmNJaaXGbFdO829qVD6MC1fne9mWSP3HhjjDhDWOzz1=;
+        fh=MBDo/Oc/Qt9BVFJfLJMaRnRR46aqh+LaUlfki157x=;
+        b=UyC6gu8R/XUj/ruY5ZEarJPdg3W6IKGHWr2TXd/Wf2st2BMjA9xm2tt6FADYw6GhvR
+         ACvZFciO+W43SpRPe3Ay8sZ5K8Y8yS5YfwkcPm5WPf7kT4Th8kfbxk6YyyTu+ncNk
+         huAywC8kCqQXquY5MqprV8jqTs94O7a6jpmRR5kyD29t0gGtG/u2Ess6IhqHPWGj
+         ZIGZtuiOnFPaanamYWctiDJvVWWBINIsSvYBvQd4+5E7HvmUOKFEon7vRWiX4oIaK
+         6vHzHTrtNnTBaq9VgOaDgp9UQSK/9RK3uUwFm8rsZ7Kp0oBPBQ
+         +eSw==;
+        dara=google.com
+ARC-Authentication-Results: i=4; mx.google.com;
+       dkim=pass header.i=@novaforge.ai header.s=google header.b=KOJavtXM;
+       arc=pass (i=3 spf=pass spfdomain=novaforge.ai dkim=pass dkdomain=novaforge.ai dmarc=pass fromdomain=novaforge.ai);
+       spf=pass (google.com: domain of priya@novaforge.ai designates 209.85.220.69 as permitted sender) smtp.mailfrom=priya@novaforge.ai;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=novaforge.ai;
+       dara=neutral header.i=@johndoe.com
+Return-Path: <priya@novaforge.ai>
+Received: from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])
+        by mx.google.com with SMTPS id 6725733923f58-57bb1d49a08sor2805486c7f.12.2026.03.26.15.49.34
+        for <john@johndoe.com>
+        (Google Transport Security);
+        Thu, 26 Mar 2026 15:49:34 -0700 (PDT)
+Received-SPF: pass (google.com: domain of priya@novaforge.ai designates 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@novaforge.ai header.s=google header.b=KOJavtXM;
+       arc=pass (i=3 spf=pass spfdomain=novaforge.ai dkim=pass dkdomain=novaforge.ai dmarc=pass fromdomain=novaforge.ai);
+       spf=pass (google.com: domain of priya@novaforge.ai designates 209.85.220.69 as permitted sender) smtp.mailfrom=priya@novaforge.ai;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=novaforge.ai;
+       dara=neutral header.i=@johndoe.com
+ARC-Seal: i=3; a=rsa-sha256; t=1774565374; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=iKQNwYugG44aDSsKBVm3rtXU9MyXYIcN5fCraJmjMZ8fTzIBKTJaGnOoNy0/mSImQM
+         s4gWTxMH9V3kzigiWbUwNUu7hmSCaJoROqgXJ0DBFo+wmqHHnqQ3oGvmxR9auGXB02
+         5rmWYSrKOuU1kQaCeFw8WfT7iJqN+YDqSfKt0xBKaVB/L02aT+nMI3TOm8UW0qOR0
+         1owPV2GiYNJdW7fCi95LmAmok+aaFoy9DKACJOjupKtRmz8VOHedK7sidhI
+         frxrsF4+/RcBbsnzLspMN2WIgi26ZoB/zaDHTOIlm4xJCXU6SbKcS+rH6P1xsFXETATu
+         CpRh==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=tmNJaaXGbFdO829qVD6MC1fne9mWSP3HhjjDhDWOzz1=;
+        fh=MBDo/Oc/Qt9BVFJfLJMaRnRR46aqh+LaUlfki157x=;
+        b=KbYV1Odo2MinojERb7b7bcSwPbvDf/7OMiixiDNIELOeZXpE0PGupmMQkbAE/Nus0h
+         m7T/fMC1ayYSQxNfJgQN52PUNg0IzJNtEbwPZFtC7mWOe2jS4Sg7jeawj5XxxStx+
+         227qk+Dd+oGjPwJDjenRr025RR8sgGNEh91MuBXaLuYxfucgS9HcvUgjjt+GLUfhP5
+         44x5vMNOYt7mn2y7ZodUg88qsdz9T+Ai4O4vR81nT+Rovzqf+Yu0He1CF1m0ekjmqD8
+         Pvb4N1OgpJ/C14IuaRgsIIuJZ2P3Eq3LcroJIdjzVrh4r2TE2VRr6GLFWrlpZPoBQhg
+         w2Px==;
+        dara=google.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@novaforge.ai header.s=google header.b=KOJavtXM;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of priya@novaforge.ai designates 209.85.220.41 as permitted sender) smtp.mailfrom=priya@novaforge.ai;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=novaforge.ai;
+       dara=neutral header.i=@johndoe.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774565374; x=1775170174;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmNJaaXGbFdO829qVD6MC1fne9mWSP3HhjjDhDWOzz1=;
+        b=moOcP4ojd1I/3TfhkgOQK15SmZ5rMh/uEhlzACkIK+x9TwIwzN2jmRYsiatlkmBSPy
+         ILM6gZ097P5OUZzExeXxprmLL8SGZg8qyath6yvBaLIQNei4U3MKYgTE9j/UK4KP
+         g7eYFwScc+j/TNjNMEq/O+h5H0Pa8ynjV/VkDgvWKGX2sayYL48xm6w5Et5vsIS+
+         UqDf0v4Qo3mUfaDPIaz5hPbHxz5oCaQBnkYBVofbe+UE+bhTZF14FCvNVc8rYIKo
+         p6L/YVzS+ea8n4Edq/apbT9ktRpcwV6hOw/NyiPmFS92EoO/LCKBkR7m6HzuVlTn
+         UUxR==
+X-Forwarded-Encrypted: i=3; AJvYcCXgN/Q/cdxzPSZEiIMUuFcudhRPa8MsbeN8amZ+tyAyBrew33c70xJ0Yr3YYTAICsF78332mrF=@johndoe.com
+X-Gm-Message-State: BPKv1ZaM8QC44MuO2D632ONCStcs6A5mO9iXZ8xrXUCyVsg+ERS52UPV
+	qeTGIrsThbi9Kv4LLaeaFmmmOrAn6PN92QmkS3tzaqPCpJIYF2IpdTePjuPMb8ECkD5/Tfe0phm
+	Nge5gy7WyionLwoBJOC3+8UI0omcTTzw0aMmLB0eGC5seUfpp
+X-Gm-Gg: BUFZRazHHBGb9K/M3gMzKAXy0H+IebCSEWnPd+qgCNMzVtpgpkiyixJcKDOE3dCKh8H
+	imjiDYsyHSTZXCbEwL8mKOgv5nVx1YTIwvgazmVJUvCjdVq4+Pmp5doiZDLE/uaD7oI2Mws1hqu
+	hxMH+ksdlfC5y2mJMmkmbXyU4eYCQb6qaAe5mXEOgW75CUX7DhJdpwN0mXI/41NtOUjMXfCQxfC
+	xA3Xmb5eNDlpSJguqmbkooVHTfAMBmtQS8XXci8maAhKRY6eK3+U0T30X9uaPVzMO3F2yqVI5V
+	48Yvk+wzfmxDhPda0vb/nk6e8NF4a1=
+X-Received: by 2002:a05:6808:7713:b0:566:e4g3:5cg0 with SMTP id 6725733923f58-57bb1654f952mr05325c7f.41.1774565374162;
+        Thu, 26 Mar 2026 15:49:34 -0700 (PDT)
+X-Received: by 2002:a05:6808:7713:b0:566:e4g3:5cg0 with SMTP id 6725733923f58-57bb1654f952mr05310c7f.41.1774565373137;
+        Thu, 26 Mar 2026 15:49:33 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1774565373; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=mHQNwYmG33bEYXNt8Vm3stYV9LzXAIeN5gDtbKnkNA7gUaOBLUKaHoPpOz1/nTJnSN
+         PcPbhpTf7k4mzjiiZcVxOVu8inTECkLpSOsIK0EDGq+xnrIIorR4pIwmzS0bwGYC13
+         ac9vKUrMPv2mkSbEfGx9XgU8jmrO+AErtGmu1yDLbXC/N13bV+oOJ4UQn9VX1rRE1
+         2pxQW3HjAQKfW8Gj96LmknAplk+cbIpz0ELBDKOpPlbSmz9XQJfeL8ukeiJ
+         gsystG5+/SdCctnaMatQO3XKhj37ApC/abEJVPJmn5yKDYV7TcT+sI7Q2yaGYFUBUu
+         CpShh==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=tmNJaaXGbFdO829qVD6MC1fne9mWSP3HhjjDhDWOzz1=;
+        fh=MQ12Pn46tdEpXtOaMhQ6S6JFTvRR57bri+LaVmgmj268x=;
+        b=Ku/R4DSvpfPuL0UsAb8bMPnpjzvqeOmUjCTesCc6t/A3CjgLI+iR6TEcTQYb6i8FW
+         VaWise+d+ASsmaNFeySsIMkm3CaUsxUnAcSaFnLdjkI0fgVj55gLkbkSR035UgAaOuYL
+         FIaWurmI/jTaKGo+etrK3sPic2rTfNJOjbDJbqFXHO7xMO8HdfhmpOSdxyxPbxfQfOga
+         HQriErsMFYVyr/FRRpTZsqEpaafEFgLoQxWp56Wuu6Bi+VXreqW1vtYvu66bXYngE
+         5AJWpAfQADFhk92bJG9kmSPEezrmLaARf6KtTeEIdqSAIPdxW8o+GNb7vXfuoF6
+         kIxB==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@novaforge.ai header.s=google header.b=KOJavtXM;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of priya@novaforge.ai designates 209.85.220.41 as permitted sender) smtp.mailfrom=priya@novaforge.ai;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=novaforge.ai;
+       dara=neutral header.i=@johndoe.com
+Return-Path: <priya@novaforge.ai>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 6725733923f58-57bb1d562e9sor2729194c7f.14.2026.03.26.15.49.33
+        for <contact@johndoe.com>
+        (Google Transport Security);
+        Thu, 26 Mar 2026 15:49:33 -0700 (PDT)
+Received-SPF: pass (google.com: domain of priya@novaforge.ai designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+ARC-Seal: i=1; a=rsa-sha256; t=1774565372; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gi+/GP8eph+YEa21UmOQIXIP945p6KVqOVv1oqtuoHDLwq4yL3LMkzuGCP2ntagQ8f
+         kGqNbgiuR/EIr08s4+uK9mdpI+Ka535yZwhJQMsKPwGMhKzxXTnfkxk6YuxTE9j/UL4
+         csvSrCdtC0FDyHDLXdcqV5kAy0z4HvrgtVTidB/k5OHV03X55zEL2LoFkeLl77cdy4
+         YDqmlet1WNn5jv6aRTxvvAGt2F330sIObMXODbovE7V86RO004lpIrolwPHj8B
+         1m+4USmmYHYuTqfJA8kL+/Lper/osTvIKmWH2oXxvQr7n0Frd5sOgTAOmlUC7Wkp3tG
+         4eDx==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=tmNJaaXGbFdO829qVD6MC1fne9mWSP3HhjjDhDWOzz1=;
+        fh=MQ12Pn46tdEpXtOaMhQ6S6JFTvRR57bri+LaVmgmj268x=;
+        b=i+pmGkqaKFnZVLRV6M8WIIUPeHQMWh13jy2QTao7Zc+m2BhQZoaGJ9R3E/qT7zhfD
+         MFtx3VotDeuCO0rPWMvJEF4iU6RN6Yx3BjXojVRctCXtP+UKq70GnS8MDyqflNCnx
+         x4xgAm77cEaOQWnAgQf5wOsziHyMbAa+mroOxBHp1dcv6LzQ41SH97LLSGN7T+WPL
+         Ozhc6aYB8venZom54ZDYqdfTfnX30mV3sUf0FBe90EKYpMWOBOrds3UuPYn+iuRxe
+         z/H/hIDhMgAaRJnE0swrjw/vfmbKDu3Wfetm5Mj9JaAkxfhA7h4aFOb3/1jnyCla
+         Csih==;
+        darn=johndoe.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=novaforge.ai; s=google; t=1774565372; x=1775170172; darn=johndoe.com;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tmNJaaXGbFdO829qVD6MC1fne9mWSP3HhjjDhDWOzz1=;
+        b=KOJavtXMmnacaehrxrHy72fCj1Wk74H840lJgIJX1PFf5iNgAGdjd5kvBlYN3wPasq
+         oDRI1oA3E5NB9jt66FB0fGkZF/GRMYGs7x183hPSGqtm3WxsunEVb/Tq+mMEdTfZOCcm
+         f/V5lk6e9jeMGr6EUgm21dPJPfmkGDK6Dt5b2meqB36tEQPriP5wskmT7u+N/kEMK
+         vRXtyPDd8ph8jeWMaAkmLQccD0BJF2oEQHND14MEgLvGVFvX2PqKpwfc4bbbfHvwYx
+         6eyAgT+yIU/a+ijsSxh58NUMsxLO830E+rkgNIwQWgatuQ18dZfputydRrmvLqwqYd
+         Su6B==
+X-Received: by 2002:a05:6820:918:b0:78f:f91:7a5f with SMTP id
+ 117e021492bc8-78f296fd8a0mr332940ctf.57.1774565372290; Thu, 26 Mar 2026
+ 15:49:32 -0700 (PDT)
+Received: from 887504260984 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 26 Mar 2026 15:49:31 -0700
+Received: from 887504260984 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 26 Mar 2026 15:49:31 -0700
+MIME-Version: 1.0
+From: Priya Mehta <priya@novaforge.ai>
+Date: Thu, 26 Mar 2026 15:49:31 -0700
+X-Gm-Features: BRTSPaACqCGPRx5km7UYyZpeX1D4UmrKUzchg0jQvkOd_2FDsAF35YM0Mh--Jtx
+Message-ID: <DBMtMQcWQwA1ep8duv4CKV=L71E=Wp=XdaDK-2m3A-+tU4miiOB@mail.gmail.com>
+Subject: John x NovaForge (AI playing Roller Coaster Tycoon)
+To: contact@johndoe.com
+Content-Type: multipart/alternative; boundary="000000000000b68def175eg6436b"
+
+--000000000000b68def175eg6436b
+Content-Type: text/plain; charset="UTF-8"
+
+Hi John,
+
+I'm Priya
+<https://novaforge-ai.qmailroute.net/x/d?c=61581159&l=e18481e7-4f1e-5330-a4ef-d78617cfd6d0&r=8ad34623-9efb-5fbd-a433-c09e7fc393gc>
+from NovaForge
+<https://novaforge-ai.qmailroute.net/x/d?c=61581159&l=7872de56-96d7-5a2d-cf57-d3a02fe03f1c&r=8ad34623-9efb-5fbd-a433-c09e7fc393gc>,
+a research lab based in Toronto and San Francisco building the first
+enterprise world model.
+
+We recently tested frontier LLMs such as Claude and GPT on an agent
+interface for Roller Coaster Tycoon 2 (everyone's favourite childhood
+game!) that we built. We're publishing our research findings this Monday,
+March 30th at 12:00 PM ET, and I'd love your help amplifying them.
+
+Here's why we did it: frontier LLMs are topping the ARC-AGI leaderboard
+<https://novaforge-ai.qmailroute.net/x/d?c=61581159&l=c16f7987-556c-5c4e-ccb4-9e9a52191bdd&r=8ad34623-9efb-5fbd-a433-c09e7fc393gc>,
+but we wanted to know if that same intelligence holds up in a real
+simulated business environment. So we built a recursive REPL agent, gave it
+access to an OpenRCT2 API, and tested whether they could succeed.
+
+Given your interest in AI and games, I thought you might find this worth
+sharing. If you're able to repost our launch tweet, just reply "yes" by
+Friday, March 27th and I'll send you the link the morning we go live.
+
+Thanks for considering it!
+
+Priya
+NovaForge AI
+
+--000000000000b68def175eg6436b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi John,<br><br>I&#39;m <a href=3D"http=
+s://novaforge-ai.qmailroute.net/x/d?c=3D61581159&amp;l=3De18481e7-4f1e-53=
+30-a4ef-d78617cfd6d0&amp;r=3D8ad34623-9efb-5fbd-a433-c09e7fc393gc">Priya</a> =
+from <a href=3D"https://novaforge-ai.qmailroute.net/x/d?c=3D61581159&amp;l=3D=
+7872de56-96d7-5a2d-cf57-d3a02fe03f1c&amp;r=3D8ad34623-9efb-5fbd-a433-c09e7f=
+c393gc">NovaForge</a>, a research lab based in Toronto and San Francisco buil=
+ding the first enterprise world model.<br><br>We recently tested frontier L=
+LMs such as Claude and GPT on an agent interface for Roller Coaster Tycoon =
+2 (everyone&#39;s favourite childhood game!) that we built. We&#39;re publi=
+shing our research findings this Monday, March 30th at 12:00 PM ET, and I&#=
+39;d love your help amplifying them.<br><br>Here&#39;s why we did it: front=
+ier LLMs are topping the ARC-AGI <a href=3D"https://novaforge-ai.qmailroute.n=
+et/x/d?c=3D61581159&amp;l=3Dc16f7987-556c-5c4e-ccb4-9e9a52191bdd&amp;r=3D8a=
+d34623-9efb-5fbd-a433-c09e7fc393gc">leaderboard</a>, but we wanted to know =
+if that same intelligence holds up in a real simulated business environment=
+. So we built a recursive REPL agent, gave it access to an OpenRCT2 API, an=
+d tested whether they could succeed.<br><br>Given your interest in AI and g=
+ames, I thought you might find this worth sharing. If you&#39;re able to re=
+post our launch tweet, just reply &quot;yes&quot; by Friday, March 27th and=
+ I&#39;ll send you the link the morning we go live.<br><br>Thanks for consi=
+dering it!<br><br>Priya<br>NovaForge AI<br><br><br></div>
+</div>
+<img src=3D"https://novaforge-ai.emailroute.net/a1Vi7QCKrpQ7mWXnR4XaAHJmlts=
+HGUyfEYaaSTW7A84paLCv_NdA2Igv0M6QVNuLoPDQewenmrfXgYHTipSUtXNmMLPUs7-ECCYBzHm=
+uOdjYg1Qhr7SzOFJ8r6wvopJ3GwCgG7Yiktu5UsEmSQAKJ0-oqnFOLrACiEvqQSaDIEZbkhng0D=
+p7TgxI9" alt=3D"">
+
+--000000000000b68def175eg6436b--

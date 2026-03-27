@@ -1,0 +1,10 @@
+# Raw email files (may contain personal data)
+inputs/emails/*.eml
+
+# Analysis data (generated per-user)
+data/tracking-pixels.json
+data/sender-blocklist.json
+outputs/analyses/*.md
+
+# Keep sanitised samples
+!inputs/emails/sanitised/
